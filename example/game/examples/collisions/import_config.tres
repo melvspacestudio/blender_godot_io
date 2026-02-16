@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BGIO_ImportConfig" format=3 uid="uid://m77k4pkksjj4"]
+
+[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="1_b3oyo"]
+[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_of35h"]
+[ext_resource type="Script" uid="uid://cxsu8asul16f5" path="res://addons/blender_godot_io_addon/modifiers/next/classes/class_node_modifier.gd" id="2_xqfmi"]
+[ext_resource type="Script" uid="uid://bxcqtr1in8cf0" path="res://addons/blender_godot_io_addon/modifiers/next/collision/collision_node_modifier.gd" id="3_xuyal"]
+
+[sub_resource type="Resource" id="Resource_xuyal"]
+script = ExtResource("2_xqfmi")
+metadata/_custom_type_script = "uid://cxsu8asul16f5"
+
+[sub_resource type="Resource" id="Resource_kvcue"]
+script = ExtResource("3_xuyal")
+metadata/_custom_type_script = "uid://bxcqtr1in8cf0"
+
+[resource]
+script = ExtResource("1_b3oyo")
+modifiers = Array[ExtResource("1_of35h")]([SubResource("Resource_xuyal"), SubResource("Resource_kvcue")])
+metadata/_custom_type_script = "uid://npj4r35p2x2f"

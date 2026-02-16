@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BGIO_ImportConfig" format=3 uid="uid://bee5de22h5hmf"]
+
+[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="1_d748t"]
+[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_eplf1"]
+
+[resource]
+script = ExtResource("1_d748t")
+metadata/_custom_type_script = "uid://npj4r35p2x2f"

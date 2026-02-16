@@ -3,68 +3,66 @@
 @tool
 class_name HandleClassName extends NodeModifier
 
+const EXTRAS_CLASS_NAME = &"class_name"
+
 @export
 var blacklist: Array[String] = []
 
 
-func _should_process(node: Node):
+func _should_process(node: Node) -> bool:
 	var extras = _get_extras(node)
-	var classname = extras.get("class_name")
+	var classname = extras.get(EXTRAS_CLASS_NAME)
 	
-	if classname:
+	if classname is String and not classname.is_empty():
 		return (ClassDB.class_exists(classname) and classname not in blacklist)
 
 	return false
 
 
-func _process(node: Node) -> Node:
+func _process_node(node: Node) -> Node:
 	var extras = _get_extras(node)
-	var classname = extras.get("class_name")
+	var classname = extras.get(EXTRAS_CLASS_NAME)
 	
 	var new_node = ClassDB.instantiate(classname)
 	new_node.name = node.name
 	
-	if node is Node3D:
-		if new_node is Node3D:
-			new_node.transform = node.transform
+	if node is Node3D and new_node is Node3D:
+		new_node.transform = node.transform
 
 	for meta_item in node.get_meta_list():
 		new_node.set_meta(meta_item, node.get_meta(meta_item))
 
 	node.replace_by(new_node, true)
-	new_node = _handle_special_types(node, new_node)
 	
-	node.free()
+	var processed_node = _handle_special_node_types(node, new_node)
+	
+	node.queue_free()
 
-	return new_node
+	return processed_node
 	
-func _handle_special_types(original_node: Node, next_node: Node) -> Node:
-	var apply_params = ApplyParams.new()
-	
+
+func _handle_special_node_types(original_node: Node, next_node: Node) -> Node:
 	if next_node is ReflectionProbe:
-		if original_node is not ImporterMeshInstance3D:
-			push_warning("Unable to create reflection probe from not mesh node")
-			return next_node
-		
-		original_node = original_node as ImporterMeshInstance3D
-		next_node = next_node as ReflectionProbe
-	
-		if apply_params.should_process(next_node):
-			next_node = apply_params.process(next_node)
-		
-		var aabb = original_node.mesh.get_mesh().get_aabb()
-		next_node.size = aabb.size + Vector3.ONE * next_node.blend_distance * 2
+		if original_node is ImporterMeshInstance3D:
+			var mesh_instance = original_node as ImporterMeshInstance3D
+			var reflection_probe = next_node as ReflectionProbe
+			
+			# Apply any parameters defined in extras
+			var apply_params_modifier = ApplyParams.new()
+			if apply_params_modifier.should_process(reflection_probe):
+				reflection_probe = apply_params_modifier.process(reflection_probe) as ReflectionProbe
+			
+			var aabb = mesh_instance.mesh.get_mesh().get_aabb()
+			reflection_probe.size = aabb.size + Vector3.ONE * reflection_probe.blend_distance * 2
+			return reflection_probe
 
 	if next_node is CollisionShape3D:
-		if original_node is not ImporterMeshInstance3D:
-			push_warning("Unable to create collision node from not mesh node")
+		if original_node is ImporterMeshInstance3D:
+			var mesh_instance = original_node as ImporterMeshInstance3D
+			var collision_shape = next_node as CollisionShape3D
 			
-		original_node = original_node as ImporterMeshInstance3D
-		next_node = next_node as CollisionShape3D
-		
-		var shape = CollisionShapeUtility.create_convex_shape_from_array_mesh(original_node.mesh.get_mesh())
-		next_node.shape = shape
-		return next_node
+			var shape = CollisionShapeUtility.create_convex_shape_from_array_mesh(mesh_instance.mesh.get_mesh())
+			collision_shape.shape = shape
+			return collision_shape
 		
 	return next_node
-			

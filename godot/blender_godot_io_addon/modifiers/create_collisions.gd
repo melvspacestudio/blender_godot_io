@@ -1,17 +1,37 @@
 @tool
 class_name CreateCollisions extends NodeModifier
 
+const EXTRAS_COLLISION = &"collision"
+const EXTRAS_MESH = &"mesh"
+const EXTRAS_CENTER_X = &"center_x"
+const EXTRAS_CENTER_Y = &"center_y"
+const EXTRAS_CENTER_Z = &"center_z"
+const EXTRAS_SIZE_X = &"size_x"
+const EXTRAS_SIZE_Y = &"size_y"
+const EXTRAS_SIZE_Z = &"size_z"
+const EXTRAS_HEIGHT = &"height"
+const EXTRAS_RADIUS = &"radius"
+
+const TYPE_SIMPLE = "simple"
+const TYPE_TRIMESH = "trimesh"
+const TYPE_BOX = "box"
+const TYPE_CYLINDER = "cylinder"
+const TYPE_SPHERE = "sphere"
+const TYPE_CAPSULE = "capsule"
+const TYPE_COL_ONLY = "-c"
+
+var _collision_map: Dictionary = {}
 
 func _should_process(node: Node):
 	var extras = _get_extras(node)
-	var collision = extras.get('collision')
+	var collision = extras.get(EXTRAS_COLLISION)
 
 	return node is PhysicsBody3D and collision != null
 	
 
-func _process(node: Node) -> Node:
+func _process_node(node: Node) -> Node:
 	var extras = _get_extras(node)
-	var collision = extras['collision']
+	var collision = extras[EXTRAS_COLLISION]
 	
 	return _collisions(node, collision, extras)
 
@@ -26,40 +46,27 @@ func _process(node: Node) -> Node:
 ## @param extras Dictionary containing additional configuration details
 ## @return Node The generated collision body or modified original node
 func _collisions(node: PhysicsBody3D, collision: String, extras: Dictionary) -> Node:
-	var target_mesh: String = extras.get('mesh', "")
-	var t = node.transform
+	var target_mesh: String = extras.get(EXTRAS_MESH, "")
 	
-	var simple: bool = "simple" in collision
-	var trimesh: bool = "trimesh" in collision
+	var simple: bool = TYPE_SIMPLE in collision
+	var trimesh: bool = TYPE_TRIMESH in collision
 	
-	# try to generate trimesh (concave) or simple (convex) collisions
-	var trimesh_shape := ConcavePolygonShape3D.new()
-	var simple_shape := ConvexPolygonShape3D.new()
-
 	var mesh_instance: ImporterMeshInstance3D
 	if target_mesh:
-		print(target_mesh)
 		mesh_instance = node.get_node(target_mesh)
-		print("Mesh instance found: ", mesh_instance)
-
 	else:
-		print("Searching for mesh instance...")
 		mesh_instance = _find_mesh_instance(node)
-		print("Mesh instance found: ", mesh_instance)
 
 	var collision_shape = CollisionShape3D.new()
 	collision_shape.name = "CollisionShape3D_" + node.name
 	
-	var col_only = "-c" in collision
+	var col_only = TYPE_COL_ONLY in collision
 	collision_shape.scale = node.scale
 	collision_shape.rotation = node.rotation
 
 	if simple or trimesh:
-		push_warning("Trimesh and Simple mesh collisions are unimplemented")
-		return node
-		
 		if not mesh_instance:
-			push_warning("No mesh instance found, cannot create convex collision")
+			push_warning("No mesh instance found, cannot create convex/concave collision")
 			return node
 
 		var collision_shapes = _get_mesh_collisions(mesh_instance, not simple)
@@ -67,59 +74,49 @@ func _collisions(node: PhysicsBody3D, collision: String, extras: Dictionary) -> 
 			collision_shape.shape = collision_shapes[0]
 	
 	if not simple and not trimesh:
-		if "center_x" in extras and "center_y" in extras and "center_z" in extras:
-			var center_x = float(extras.get("center_x"))
-			var center_y = float(extras.get("center_y"))
-			var center_z = - float(extras.get("center_z"))
+		if extras.has(EXTRAS_CENTER_X) and extras.has(EXTRAS_CENTER_Y) and extras.has(EXTRAS_CENTER_Z):
+			var center_x = float(extras.get(EXTRAS_CENTER_X))
+			var center_y = float(extras.get(EXTRAS_CENTER_Y))
+			var center_z = - float(extras.get(EXTRAS_CENTER_Z))
 			collision_shape.position += Vector3(center_x, center_y, center_z)
 	
-	if "box" in collision:
-		if "size_x" in extras and "size_x" in extras \
-		and "size_z" in extras:
+	if TYPE_BOX in collision:
+		if extras.has(EXTRAS_SIZE_X) and extras.has(EXTRAS_SIZE_Y) and extras.has(EXTRAS_SIZE_Z):
 			var box = BoxShape3D.new()
-			
-			var size_x = float(extras.get("size_x"))
-			var size_y = float(extras.get("size_y"))
-			var size_z = float(extras.get("size_z"))
-			
+			var size_x = float(extras.get(EXTRAS_SIZE_X))
+			var size_y = float(extras.get(EXTRAS_SIZE_Y))
+			var size_z = float(extras.get(EXTRAS_SIZE_Z))
 			box.size = Vector3(size_x, size_y, size_z)
-			
 			collision_shape.shape = box
 	
-	if "cylinder" in collision:
-		if "height" in extras and "radius" in extras:
+	elif TYPE_CYLINDER in collision:
+		if extras.has(EXTRAS_HEIGHT) and extras.has(EXTRAS_RADIUS):
 			var cylinder = CylinderShape3D.new()
-			
-			var height = float(extras.get("height"))
-			var radius = float(extras.get("radius"))
-			
+			var height = float(extras.get(EXTRAS_HEIGHT))
+			var radius = float(extras.get(EXTRAS_RADIUS))
 			cylinder.height = height
 			cylinder.radius = radius
-			
 			collision_shape.shape = cylinder
 	
-	if "sphere" in collision:
-		if "radius" in extras:
+	elif TYPE_SPHERE in collision:
+		if extras.has(EXTRAS_RADIUS):
 			var sphere = SphereShape3D.new()
-			var radius = float(extras.get("radius"))
-
+			var radius = float(extras.get(EXTRAS_RADIUS))
 			sphere.radius = radius
 			collision_shape.shape = sphere
 	
-	if "capsule" in collision:
-		if "height" in extras and "radius" in extras:
+	elif TYPE_CAPSULE in collision:
+		if extras.has(EXTRAS_HEIGHT) and extras.has(EXTRAS_RADIUS):
 			var capsule = CapsuleShape3D.new()
-			
-			var height = float(extras.get("height"))
-			var radius = float(extras.get("radius"))
-			
+			var height = float(extras.get(EXTRAS_HEIGHT))
+			var radius = float(extras.get(EXTRAS_RADIUS))
 			capsule.height = height
 			capsule.radius = radius
-			
 			collision_shape.shape = capsule
 	
 	if collision_shape.shape == null:
-		push_warning("No collision shape found, cannot create collision")
+		push_warning("No collision shape found, cannot create collision for node: %s" % node.name)
+		collision_shape.free()
 		return node
 	
 	if col_only and mesh_instance:
@@ -139,23 +136,23 @@ func _find_mesh_instance(node: Node) -> ImporterMeshInstance3D:
 	for child in node.get_children():
 		if child is ImporterMeshInstance3D:
 			return child
-
-		return _find_mesh_instance(child)
+		
+		var found = _find_mesh_instance(child)
+		if found:
+			return found
 
 	return null
 
 
 func _get_mesh_collisions(node: ImporterMeshInstance3D, include_convex: bool) -> Array[Shape3D]:
-	var r_collision_map: Dictionary = {}
-	var collisions: Array[CollisionShape3D] = []
 	var mesh = node.mesh
 	var shapes: Array[Shape3D] = []
 
-	if r_collision_map.has(mesh):
-		shapes = r_collision_map[mesh]
+	if _collision_map.has(mesh):
+		shapes = _collision_map[mesh]
 	else:
 		shapes = _pre_gen_shape_list(mesh, include_convex)
-		r_collision_map[mesh] = shapes
+		_collision_map[mesh] = shapes
 	
 	return shapes
  
@@ -164,8 +161,7 @@ func _pre_gen_shape_list(mesh: ImporterMesh, p_convex: bool) -> Array[Shape3D]:
 	if !p_convex:
 		var shape: ConcavePolygonShape3D = mesh.create_trimesh_shape()
 		return [shape]
-
 	else:
-		var shapes = []
+		var shapes: Array[Shape3D] = []
 		shapes.push_back(mesh.create_convex_shape(true,  false))
 		return shapes

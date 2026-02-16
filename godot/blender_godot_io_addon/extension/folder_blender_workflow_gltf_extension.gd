@@ -5,14 +5,18 @@ class_name FolderBlenderWorkflowGLTFExtension extends BlenderWorkflowGLTFExtensi
 
 
 ## Folder to import scenes from, extension will not run on files outside this directory
-@export var folders: Array[GLTFTargetFolder] = []
+@export var folders: Array[Resource] = []
 
 
-func _import_preflight(state, extensions):
+func _import_preflight(state: GLTFState, extensions: PackedStringArray) -> Error:
 	if not enabled:
 		return ERR_SKIP
 
-	for target in folders:
+	for target_res in folders:
+		var target = target_res as GLTFTargetFolder
+		if not target:
+			continue
+			
 		if target.allow_subfolders:
 			if state.base_path.contains(target.folder):
 				return OK

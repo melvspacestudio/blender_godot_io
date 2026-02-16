@@ -1,3 +1,4 @@
+@tool
 class_name GLTFTargetFolder extends Resource
 
 ## Folder to import scenes from, extension will not run on files outside this directory

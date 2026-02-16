@@ -1,3 +1,4 @@
+@tool
 class_name BlenderGodotIOSettings extends Object
 
 const CONFIG_PATH_SETTING_KEY = "blender_godot_io/configuration_path"

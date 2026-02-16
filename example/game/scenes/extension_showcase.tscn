@@ -56,7 +56,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.6, 0)
 shape = SubResource("ConcavePolygonShape3D_o5qli")
 
-[node name="Monkey" parent="." unique_id=28296272 instance=ExtResource("1_x7cie")]
+[node name="Monkey" parent="." unique_id=863077328 instance=ExtResource("1_x7cie")]
 transform = Transform3D(0.89882475, -0.43342564, -0.065240115, 0.4168569, 0.8913075, -0.17832915, 0.13544144, 0.13309087, 0.9818057, -0.040414333, 5.435275, -0.095875025)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1852850675]

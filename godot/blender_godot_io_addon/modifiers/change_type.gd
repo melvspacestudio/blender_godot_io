@@ -3,35 +3,44 @@
 @tool
 class_name ChangeType extends NodeModifier
 
+var _regex: RegEx
 
-func _get_class(node: Node):
-	var regex = RegEx.new()
-	regex.compile("_?\\d+$")
+func _init() -> void:
+	_regex = RegEx.new()
+	_regex.compile("_?\\d+$")
+
+
+func _get_target_classname(node: Node) -> String:
+	if not _regex:
+		_regex = RegEx.new()
+		_regex.compile("_?\\d+$")
 	
-	return regex.sub(node.name, "", true)
+	return _regex.sub(node.name, "", true)
 
 
-func _should_process(node: Node):
+func _should_process(node: Node) -> bool:
 	if node is MeshInstance3D:
 		return false
 
-	# TODO(@melvspace): 03/06/2025 - also check extras for `type` property
-	return ClassDB.class_exists(_get_class(node))
+	var target_class = _get_target_classname(node)
+	return ClassDB.class_exists(target_class)
 
-func _process(node: Node) -> Node:
-	var new_node = ClassDB.instantiate(_get_class(node))
+
+func _process_node(node: Node) -> Node:
+	var target_class = _get_target_classname(node)
+	var new_node = ClassDB.instantiate(target_class)
+	if not new_node:
+		return node
+		
 	new_node.name = node.name
 	
 	if node is Node3D and new_node is Node3D:
-		node = node as Node3D
-		new_node = new_node as Node3D
-		new_node.global_position = node.global_position
-		new_node.rotation = node.rotation
+		new_node.transform = (node as Node3D).transform
 
 	for meta_item in node.get_meta_list():
 		new_node.set_meta(meta_item, node.get_meta(meta_item))
 
-	node.replace_by(new_node, true)
-	node.free()
+	# Transfer children and replace
+	_replace_node(node, new_node, null, false)
 
 	return new_node
