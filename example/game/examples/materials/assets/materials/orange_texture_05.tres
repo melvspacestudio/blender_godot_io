@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://crm7xpmcsh4wf"]
+
+[ext_resource type="Texture2D" uid="uid://codn0iig4331c" path="res://examples/materials/assets/textures/orange_texture_05.png" id="1_rli31"]
+
+[resource]
+resource_name = "orange_texture_05"
+cull_mode = 2
+albedo_texture = ExtResource("1_rli31")
+roughness = 0.5
+metadata/extras = {
+"bamam_processed": true
+}

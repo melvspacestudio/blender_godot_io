@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://by14vi36waoua"]
+
+[ext_resource type="Texture2D" uid="uid://cveh2jhyktfn7" path="res://examples/materials/assets/textures/light_texture_06.png" id="1_d4di6"]
+
+[resource]
+resource_name = "light_texture_06"
+cull_mode = 2
+albedo_texture = ExtResource("1_d4di6")
+roughness = 0.5
+metadata/extras = {
+"bamam_processed": true
+}
