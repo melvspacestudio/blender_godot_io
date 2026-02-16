@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_6b1ju"]
 [ext_resource type="Script" uid="uid://dd2ehe5nnuk6i" path="res://addons/blender_godot_io_addon/processors/assets/processor.gd" id="2_1po4o"]
 [ext_resource type="Script" uid="uid://b0bh7c1fa8dgg" path="res://addons/blender_godot_io_addon/processors/assets/texture_processor.gd" id="3_7ec4e"]
+[ext_resource type="Script" uid="uid://d1iwobo2sil31" path="res://addons/blender_godot_io_addon/processors/assets/material_processor.gd" id="4_1po4o"]
 [ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="4_x2k7q"]
 
 [sub_resource type="Resource" id="Resource_noenh"]
@@ -10,7 +11,12 @@ script = ExtResource("3_7ec4e")
 texture_dir = "res://examples/materials/assets/textures"
 metadata/_custom_type_script = "uid://b0bh7c1fa8dgg"
 
+[sub_resource type="Resource" id="Resource_7ec4e"]
+script = ExtResource("4_1po4o")
+material_dir = "res://examples/materials/assets/materials"
+metadata/_custom_type_script = "uid://d1iwobo2sil31"
+
 [resource]
 script = ExtResource("4_x2k7q")
-processors = Array[ExtResource("2_1po4o")]([SubResource("Resource_noenh")])
+processors = Array[ExtResource("2_1po4o")]([SubResource("Resource_noenh"), SubResource("Resource_7ec4e")])
 metadata/_custom_type_script = "uid://npj4r35p2x2f"

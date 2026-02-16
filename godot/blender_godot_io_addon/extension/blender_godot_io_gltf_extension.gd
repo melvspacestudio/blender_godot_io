@@ -16,12 +16,12 @@ func _import_pre_generate(state: GLTFState) -> Error:
 	
 	for config in list.configs:
 		for processor in config.processors:
-			if processor.get_class() in completed_processors:
-				print("Skipping %s from %s because it was already ran", processor.get_class(), config.resource_path)
+			if processor.get_script().get_global_name() in completed_processors:
+				print("Skipping %s from %s because it was already ran" % [processor.get_script().get_global_name(), config.resource_path])
 				continue
 				
 			processor._pre_generate(state)
-			completed_processors.append(processor.get_class())
+			completed_processors.append(processor.get_script().get_global_name())
 	
 	return OK
 
@@ -33,12 +33,12 @@ func _generate_scene_node(state: GLTFState, gltf_node: GLTFNode, scene_parent: N
 	
 	for config in list.configs:
 		for modifier in config.modifiers:
-			if modifier.get_class() in completed_modifiers:
-				print("Skipping %s from %s because it was already ran", modifier.get_class(), config.resource_path)
+			if modifier.get_script().get_global_name() in completed_modifiers:
+				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
 				
 			node = modifier._generate_node(state, gltf_node, scene_parent, node)
-			completed_modifiers.append(modifier.get_class())
+			completed_modifiers.append(modifier.get_script().get_global_name())
 			
 	return node
 
@@ -48,12 +48,12 @@ func _import_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node:
 	
 	for config in list.configs:
 		for modifier in config.modifiers:
-			if modifier.get_class() in completed_modifiers:
-				print("Skipping %s from %s because it was already ran", modifier.get_class(), config.resource_path)
+			if modifier.get_script().get_global_name() in completed_modifiers:
+				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
 				
 			node = modifier._process_node(node)
-			completed_modifiers.append(modifier.get_class())
+			completed_modifiers.append(modifier.get_script().get_global_name())
 	
 	return OK
 
@@ -63,11 +63,11 @@ func _import_post(state: GLTFState, root: Node) -> Error:
 	
 	for config in list.configs:
 		for processor in config.processors:
-			if processor.get_class() in completed_processors:
-				print("Skipping %s from %s because it was already ran", processor.get_class(), config.resource_path)
+			if processor.get_script().get_global_name() in completed_processors:
+				print("Skipping %s from %s because it was already ran" % [processor.get_script().get_global_name(), config.resource_path])
 				continue
 				
 			processor._process_scene(state, root)
-			completed_processors.append(processor.get_class())
+			completed_processors.append(processor.get_script().get_global_name())
 	
 	return OK

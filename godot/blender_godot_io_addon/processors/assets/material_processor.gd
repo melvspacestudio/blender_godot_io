@@ -21,18 +21,6 @@ func _pre_generate(state: GLTFState) -> Error:
 		push_warning("Material directory is not set for %s" % [self])
 		return ERR_SKIP
 	
-	var json = state.json["images"]
-	var images = state.get_images()
-	for i in len(images):
-		var name = json[i]["name"]
-		var texture: Texture2D = images[i]
-		var image := texture.get_image()
-		
-		var path = _get_material_dir().path_join(name + ".png")
-		if not ResourceLoader.exists(path):
-			image.save_png(path)
-			load(path)
-
-		texture.take_over_path(path)
+	print(state)
 		
 	return OK

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_of35h"]
 [ext_resource type="Script" uid="uid://cxsu8asul16f5" path="res://addons/blender_godot_io_addon/modifiers/next/classes/class_node_modifier.gd" id="2_xqfmi"]
 [ext_resource type="Script" uid="uid://bxcqtr1in8cf0" path="res://addons/blender_godot_io_addon/modifiers/next/collision/collision_node_modifier.gd" id="3_xuyal"]
+[ext_resource type="Script" uid="uid://dd2ehe5nnuk6i" path="res://addons/blender_godot_io_addon/processors/assets/processor.gd" id="4_kvcue"]
 
 [sub_resource type="Resource" id="Resource_xuyal"]
 script = ExtResource("2_xqfmi")

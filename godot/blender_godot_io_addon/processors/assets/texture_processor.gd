@@ -18,7 +18,7 @@ func _get_texture_dir() -> String:
 	return texture_dir
 
 func _pre_generate(state: GLTFState) -> Error:
-	if not material_dir:
+	if not texture_dir:
 		push_warning("Texture directory is not set for %s" % [self])
 		return ERR_SKIP
 		
