@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfqmwbq276wk2"]
+[gd_scene format=3 uid="uid://dfqmwbq276wk2"]
 
 [ext_resource type="PackedScene" uid="uid://db8v4u0y3gven" path="res://assets/models/monkey.glb" id="1_x7cie"]
 
@@ -27,42 +27,42 @@ size = Vector2(100, 25)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_o5qli"]
 data = PackedVector3Array(50, 0, 12.5, -50, 0, 12.5, 50, 0, -12.5, -50, 0, 12.5, -50, 0, -12.5, 50, 0, -12.5)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=249529837]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1939639194]
 environment = SubResource("Environment_sugp2")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=566637380]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=774818812]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=609694529]
 mesh = SubResource("PlaneMesh_sgp6g")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1850662959]
 shape = SubResource("ConcavePolygonShape3D_sgp6g")
 
-[node name="Slope" type="StaticBody3D" parent="."]
+[node name="Slope" type="StaticBody3D" parent="." unique_id=338264594]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Slope"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slope" unique_id=1860453771]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.6, 0)
 mesh = SubResource("PlaneMesh_o5qli")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Slope"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slope" unique_id=1674475074]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.6, 0)
 shape = SubResource("ConcavePolygonShape3D_o5qli")
 
-[node name="Monkey" parent="." instance=ExtResource("1_x7cie")]
+[node name="Monkey" parent="." unique_id=28296272 instance=ExtResource("1_x7cie")]
 transform = Transform3D(0.89882475, -0.43342564, -0.065240115, 0.4168569, 0.8913075, -0.17832915, 0.13544144, 0.13309087, 0.9818057, -0.040414333, 5.435275, -0.095875025)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1852850675]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 9.955041, 7.169738)
 
-[node name="Label3D" type="Label3D" parent="."]
+[node name="Label3D" type="Label3D" parent="." unique_id=242910603]
 transform = Transform3D(1, 0, 0, 0, 0.25881898, 0.9659258, 0, -0.9659258, 0.25881898, -8.296166, 1.2750366, -2.2211015)
 text = "This scene shows how GLTF model 
 converted to RigidBody3D 
