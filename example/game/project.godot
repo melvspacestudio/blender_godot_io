@@ -27,7 +27,7 @@ configuration_path="res://config.tres"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/blender_godot_io_addon/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://addons/blender_godot_io_addon/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [filesystem]
 
@@ -36,5 +36,6 @@ import/blender/enabled=false
 [importer_defaults]
 
 scene={
-&"gltf/embedded_image_handling": 2
+&"gltf/embedded_image_handling": 2,
+&"meshes/light_baking": 2
 }

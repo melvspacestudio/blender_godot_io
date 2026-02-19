@@ -12,7 +12,7 @@ func _get_material_dir() -> String:
 		var resource_dir = resource_path.replace("res://", "").split("/")
 		resource_dir.remove_at(resource_dir.size() - 1)
 		
-		return "res://" + "/".join(resource_dir)
+		return "res://" + "/".join(resource_dir).path_join(material_dir)
 
 	return material_dir
 

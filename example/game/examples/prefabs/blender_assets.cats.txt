@@ -1,0 +1,6 @@
+# Blender Asset Catalog Definition File
+# UUID:catalog/path:Simple Name
+VERSION 1
+9bc47577-bd09-4923-8ece-5b22cc3d02e6:Prefabs:Prefabs
+1ceba53c-5e45-401b-aeec-024fcc09565a:Space Kit:Space Kit
+4bdab262-268c-4d30-a5a0-1e249077cfd8:Space Station Kit:Space Station Kit

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BGIO_ImportConfig" format=3 uid="uid://difq7intiyfl6"]
+
+[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_djld7"]
+[ext_resource type="Script" uid="uid://dd2ehe5nnuk6i" path="res://addons/blender_godot_io_addon/processors/assets/processor.gd" id="2_2rwdh"]
+[ext_resource type="Script" uid="uid://du2mqo5ytf8vp" path="res://examples/prefabs/processors/prefab_modifier.gd" id="2_ho55f"]
+[ext_resource type="Script" uid="uid://xwy47ltjnuuk" path="res://examples/prefabs/processors/lightmap_processor.gd" id="3_uuyfe"]
+[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="6_xyayv"]
+
+[sub_resource type="Resource" id="Resource_djld7"]
+script = ExtResource("2_ho55f")
+metadata/_custom_type_script = "uid://du2mqo5ytf8vp"
+
+[sub_resource type="Resource" id="Resource_uuyfe"]
+script = ExtResource("3_uuyfe")
+metadata/_custom_type_script = "uid://xwy47ltjnuuk"
+
+[resource]
+script = ExtResource("6_xyayv")
+processors = Array[ExtResource("2_2rwdh")]([SubResource("Resource_uuyfe")])
+modifiers = Array[ExtResource("1_djld7")]([SubResource("Resource_djld7")])
+metadata/_custom_type_script = "uid://npj4r35p2x2f"
