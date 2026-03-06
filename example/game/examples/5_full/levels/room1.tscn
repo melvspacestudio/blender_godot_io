@@ -37,15 +37,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.015045, 2.099411, 2.834961)
 size = Vector3(13.539978, 5.2514343, 21.654297)
 data = SubResource("VoxelGIData_0ck8m")
 
-[node name="Level" parent="." unique_id=1355502930 instance=ExtResource("1_3hrwl")]
+[node name="Level" parent="." unique_id=124879847 instance=ExtResource("1_3hrwl")]
 
-[node name="MeshInstance3D" parent="Level/RigidBody3D_001" parent_id_path=PackedInt32Array(1355502930, 272071221) index="0" unique_id=1535454159]
+[node name="MeshInstance3D" parent="Level/RigidBody3D_001" parent_id_path=PackedInt32Array(124879847, 982228398) index="0" unique_id=270644076]
 gi_mode = 2
 
-[node name="MeshInstance3D" parent="Level/RigidBody3D_003" parent_id_path=PackedInt32Array(1355502930, 421835436) index="0" unique_id=1255264248]
+[node name="MeshInstance3D" parent="Level/RigidBody3D_003" parent_id_path=PackedInt32Array(124879847, 1002919286) index="0" unique_id=1887355686]
 gi_mode = 2
 
-[node name="HingeJoint3D" parent="Level" index="16" unique_id=2049127540]
+[node name="HingeJoint3D" parent="Level" index="16" unique_id=961629642]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2.25, 1.5, -4)
 node_a = NodePath("../StaticBody3D")
 node_b = NodePath("../RigidBody3D_003")
