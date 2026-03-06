@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="QMIndex" format=3 uid="uid://crhmhs0ulj2ct"]
+
+[ext_resource type="Script" uid="uid://wb2bes4ma1cf" path="res://addons/quick_menu/core/index.gd" id="1_lebx4"]
+
+[resource]
+script = ExtResource("1_lebx4")
+name = "Gizmos"
+key = 71
+metadata/_custom_type_script = "uid://wb2bes4ma1cf"
