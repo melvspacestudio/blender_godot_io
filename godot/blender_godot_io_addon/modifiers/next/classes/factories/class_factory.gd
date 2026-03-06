@@ -21,7 +21,7 @@ func create_class_instance(state: GLTFState, gltf_node: GLTFNode, scene_parent: 
 		new_node = new_node as Node
 		new_node.name = gltf_node.resource_name
 		
-		var extras: Dictionary = BlenderNodes.get_extras(gltf_node)
+		var extras: Dictionary = BGIO_NodeUtility.get_extras(gltf_node)
 		var properties: Array[Dictionary] = new_node.get_property_list()
 		
 		var available_keys: Array[String] = []

@@ -1,5 +1,5 @@
 @tool
-class_name BlenderNodes
+class_name BGIO_NodeUtility
 
 
 ## Remove `.001` from names
@@ -34,24 +34,6 @@ static func all_of(node: Node) -> Array[Node]:
 
 	return nodes
 
-
-
-static func apply_param(node: Node, key: String, value: Variant) -> Error:
-	# TODO(@melvspace): separate applying params per strategy. 
-	# Example - ImporterMeshInstance3D strategy should create lazy node and 
-	# maybe also parse `gi_mode: Dynamic` to `gi_mode: 2`
-	if node is ImporterMeshInstance3D:
-		var apply_later: ApplyLaterNode = _find_apply_later(node)
-		if not apply_later:
-			apply_later = ApplyLaterNode.new()
-			node.add_child(apply_later)
-			apply_later.name = "_ApplyParamsLater"
-			apply_later.owner = node.owner
-			
-		apply_later.extras[key] = value
-
-	_recursive_set(node, key, value)
-	return OK
 
 
 static func _recursive_set(object: Object, key: String, value: Variant):
@@ -100,14 +82,6 @@ static func _recursive_set(object: Object, key: String, value: Variant):
 			
 	if property_object and property_object is Object:
 		_recursive_set(property_object, ".".join(parts), value)
-
-
-static func _find_apply_later(node: Node) -> Node:
-	for child in node.get_children():
-		if child is ApplyLaterNode:
-			return child
-			
-	return null
 
 
 static func _handle_special_types(object_value: Variant, value: Variant):

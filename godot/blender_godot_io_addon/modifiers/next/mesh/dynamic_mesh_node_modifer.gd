@@ -2,7 +2,7 @@
 class_name BGIO_DynamicMesh_NodeModifier extends BGIO_NodeModifier
 
 func _make_rigidbody_dynamic(body: RigidBody3D):
-	for child in BlenderNodes.all_of(body):
+	for child in BGIO_NodeUtility.all_of(body):
 		if child is ImporterMeshInstance3D:
 			_apply_later(child, {"gi_mode": MeshInstance3D.GIMode.GI_MODE_DYNAMIC})
 

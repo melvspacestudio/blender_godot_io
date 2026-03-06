@@ -66,7 +66,7 @@ func _import_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node:
 				break
 
 			if node != new_node:
-				BlenderNodes.replace(node, new_node)
+				BGIO_NodeUtility.replace(node, new_node)
 				node = new_node
 			
 			completed_modifiers.append(modifier.get_script().get_global_name())

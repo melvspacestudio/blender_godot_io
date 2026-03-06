@@ -1,5 +1,5 @@
 @tool
-class_name PathUtils extends Object
+class_name BGIO_Path extends Object
 
 static func resource_dir(resource: Resource) -> String:
 	var dir = resource.resource_path.replace("res://", "").split("/")

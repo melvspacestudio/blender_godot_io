@@ -1,3 +1,5 @@
+@tool
+@icon("res://addons/blender_godot_io_addon/logo.svg")
 class_name BGIO_ImportConfig extends Resource
 
 # --- Static ---

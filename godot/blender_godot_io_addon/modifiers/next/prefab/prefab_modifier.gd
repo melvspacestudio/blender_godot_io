@@ -10,7 +10,7 @@ var extensions: Array[String] = [".tscn", ".scn", ".glb", ".gltf"]
 func process_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node: Node) -> Node:
 	var name = _get_name_from_node(node)
 	if name.begins_with("$"):
-		var dir = PathUtils.resolve_at(self, prefab_dir)
+		var dir = BGIO_Path.resolve_at(self, prefab_dir)
 		var prefab_path = dir.path_join(name.substr(1))
 		var extras: Dictionary = node.get_meta("extras") if node.has_meta("extras") else {}
 		var prefab: PackedScene
@@ -27,7 +27,7 @@ func process_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node:
 		
 		if extras.get("geometry_nodes", false):
 			for child in node.get_children():
-				BlenderNodes.replace(child, prefab.instantiate(), extras)
+				BGIO_NodeUtility.replace(child, prefab.instantiate(), extras)
 				child.free()
 
 			return node
