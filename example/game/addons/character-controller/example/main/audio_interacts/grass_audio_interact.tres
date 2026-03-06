@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="AudioInteract" format=3 uid="uid://boafje76qrf27"]
+
+[ext_resource type="Script" uid="uid://b3803ujrtwrim" path="res://addons/character-controller/example/main/audios/audio_interact.gd" id="1_h7qps"]
+
+[resource]
+script = ExtResource("1_h7qps")
