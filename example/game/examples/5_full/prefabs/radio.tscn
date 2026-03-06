@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dhlyoepmtwpjn"]
+
+[ext_resource type="PackedScene" uid="uid://dcxvn3seqeucj" path="res://examples/5_full/prefabs/radio.glb" id="1_wq1w5"]
+
+[node name="$radio" unique_id=789278043 instance=ExtResource("1_wq1w5")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="0" unique_id=964650382]
+
+[node name="MeshInstance3D" parent="RigidBody3D_002" parent_id_path=PackedInt32Array(1559101621) index="0" unique_id=1938178494]
+gi_mode = 2

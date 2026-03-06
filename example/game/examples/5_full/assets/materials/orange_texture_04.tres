@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bs8acnl45d3vy"]
+
+[ext_resource type="Texture2D" uid="uid://coxhjku82axsd" path="res://examples/5_full/assets/textures/orange_texture_04.png" id="1_ucx15"]
+
+[resource]
+resource_name = "orange_texture_04"
+albedo_texture = ExtResource("1_ucx15")
+metallic_specular = 0.0
+metadata/extras = {
+"bamam_processed": true
+}

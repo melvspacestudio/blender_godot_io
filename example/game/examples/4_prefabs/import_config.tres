@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BGIO_ImportConfig" format=3 uid="uid://difq7intiyfl6"]
+
+[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/next/base/node_modifier.gd" id="1_djld7"]
+[ext_resource type="Script" uid="uid://d2on0b83b0ff7" path="res://addons/blender_godot_io_addon/modifiers/next/transform/normalize_transform_modifier.gd" id="2_hbfiu"]
+[ext_resource type="Script" uid="uid://du2mqo5ytf8vp" path="res://addons/blender_godot_io_addon/modifiers/next/prefab/prefab_modifier.gd" id="2_ho55f"]
+[ext_resource type="Script" uid="uid://b0bh7c1fa8dgg" path="res://addons/blender_godot_io_addon/modifiers/next/assets/texture_processor.gd" id="3_age4k"]
+[ext_resource type="Script" uid="uid://d1iwobo2sil31" path="res://addons/blender_godot_io_addon/modifiers/next/assets/material_processor.gd" id="5_fepx5"]
+[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="6_xyayv"]
+
+[sub_resource type="Resource" id="Resource_3b2st"]
+script = ExtResource("3_age4k")
+metadata/_custom_type_script = "uid://b0bh7c1fa8dgg"
+
+[sub_resource type="Resource" id="Resource_qr7l5"]
+script = ExtResource("5_fepx5")
+metadata/_custom_type_script = "uid://d1iwobo2sil31"
+
+[sub_resource type="Resource" id="Resource_42ww3"]
+script = ExtResource("2_hbfiu")
+metadata/_custom_type_script = "uid://d2on0b83b0ff7"
+
+[sub_resource type="Resource" id="Resource_djld7"]
+script = ExtResource("2_ho55f")
+metadata/_custom_type_script = "uid://du2mqo5ytf8vp"
+
+[resource]
+script = ExtResource("6_xyayv")
+modifiers = Array[ExtResource("1_djld7")]([SubResource("Resource_3b2st"), SubResource("Resource_qr7l5"), SubResource("Resource_42ww3"), SubResource("Resource_djld7")])
+metadata/_custom_type_script = "uid://npj4r35p2x2f"

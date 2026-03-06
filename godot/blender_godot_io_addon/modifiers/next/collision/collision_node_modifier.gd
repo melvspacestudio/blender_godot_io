@@ -1,7 +1,7 @@
 @tool
 class_name BGIO_CollissionNodeModifier extends BGIO_NodeModifier
 
-func _generate_node(state: GLTFState, gltf_node: GLTFNode, scene_parent: Node, node: Node) -> Node:
+func generate_node(state: GLTFState, gltf_node: GLTFNode, scene_parent: Node, node: Node) -> Node:
 	if not node: return node
 	if gltf_node.mesh == -1: return node
 	

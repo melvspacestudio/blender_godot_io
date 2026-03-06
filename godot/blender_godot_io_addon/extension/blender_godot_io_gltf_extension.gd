@@ -12,16 +12,19 @@ func _import_preflight(state: GLTFState, extensions: PackedStringArray) -> Error
 	
 func _import_pre_generate(state: GLTFState) -> Error:
 	var list := BGIO_ImportConfig.get_config(state.base_path)
-	var completed_processors: Array[String] = []
+	var completed_modifiers: Array[String] = []
 	
 	for config in list.configs:
-		for processor in config.processors:
-			if processor.get_script().get_global_name() in completed_processors:
-				print("Skipping %s from %s because it was already ran" % [processor.get_script().get_global_name(), config.resource_path])
+		for modifier in config.modifiers:
+			if not modifier.enabled:
+				continue
+
+			if modifier.get_script().get_global_name() in completed_modifiers:
+				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
 				
-			processor._pre_generate(state)
-			completed_processors.append(processor.get_script().get_global_name())
+			modifier.pre_generate(state)
+			completed_modifiers.append(modifier.get_script().get_global_name())
 	
 	return OK
 
@@ -33,41 +36,57 @@ func _generate_scene_node(state: GLTFState, gltf_node: GLTFNode, scene_parent: N
 	
 	for config in list.configs:
 		for modifier in config.modifiers:
+			if not modifier.enabled:
+				continue
+				
 			if modifier.get_script().get_global_name() in completed_modifiers:
 				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
 				
-			node = modifier._generate_node(state, gltf_node, scene_parent, node)
+			node = modifier.generate_node(state, gltf_node, scene_parent, node)
 			completed_modifiers.append(modifier.get_script().get_global_name())
 			
 	return node
-
+	
 func _import_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node: Node) -> Error:
 	var list := BGIO_ImportConfig.get_config(state.base_path)
 	var completed_modifiers: Array[String] = []
 	
 	for config in list.configs:
 		for modifier in config.modifiers:
+			if not modifier.enabled:
+				continue
+
 			if modifier.get_script().get_global_name() in completed_modifiers:
 				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
-				
-			node = modifier._process_node(node)
+			
+			var new_node = modifier.process_node(state, gltf_node, json, node)
+			if not is_instance_valid(new_node):
+				break
+
+			if node != new_node:
+				BlenderNodes.replace(node, new_node)
+				node = new_node
+			
 			completed_modifiers.append(modifier.get_script().get_global_name())
 	
 	return OK
 
 func _import_post(state: GLTFState, root: Node) -> Error:
 	var list := BGIO_ImportConfig.get_config(state.base_path)
-	var completed_processors: Array[String] = []
+	var completed_modifiers: Array[String] = []
 	
 	for config in list.configs:
-		for processor in config.processors:
-			if processor.get_script().get_global_name() in completed_processors:
-				print("Skipping %s from %s because it was already ran" % [processor.get_script().get_global_name(), config.resource_path])
+		for modifier in config.modifiers:
+			if not modifier.enabled:
+				continue
+
+			if modifier.get_script().get_global_name() in completed_modifiers:
+				print("Skipping %s from %s because it was already ran" % [modifier.get_script().get_global_name(), config.resource_path])
 				continue
 				
-			processor._process_scene(state, root)
-			completed_processors.append(processor.get_script().get_global_name())
+			modifier.process_scene(state, root)
+			completed_modifiers.append(modifier.get_script().get_global_name())
 	
 	return OK

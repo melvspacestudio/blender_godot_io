@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://o8ig41sp4wm1"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m2ocf"]
+load_path = "res://.godot/imported/light_texture_06.png-8747c2bf914e647729d21bf6090d3856.s3tc.ctex"
+
+[resource]
+resource_name = "light_texture_06"
+albedo_texture = SubResource("CompressedTexture2D_m2ocf")
+metadata/extras = {
+"bamam_processed": true
+}

@@ -35,7 +35,4 @@ static func get_config(path: String) -> List:
 # --- Instance ---
 
 @export
-var processors: Array[BGIO_Processor]
-
-@export
-var modifiers: Array[BGIO_NodeModifier]
+var modifiers: Array[BGIO_NodeModifier] = []

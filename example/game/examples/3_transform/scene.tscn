@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://kkthokqig7b1"]
+
+[ext_resource type="PackedScene" uid="uid://rmxwr52kwovi" path="res://examples/3_transform/more_cubes.glb" id="1_edl7l"]
+[ext_resource type="PackedScene" uid="uid://df7n0hphp0hk" path="res://examples/3_transform/cubes.glb" id="1_wevno"]
+
+[node name="Scene" type="Node3D" unique_id=555317270]
+
+[node name="more_cubes" parent="." unique_id=1593064983 instance=ExtResource("1_edl7l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 0)
+
+[node name="$Cubes" parent="." unique_id=697929655 instance=ExtResource("1_wevno")]
+
+[editable path="more_cubes"]
+[editable path="$Cubes"]

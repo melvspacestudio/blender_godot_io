@@ -1,6 +1,41 @@
 @tool
 class_name BlenderNodes
 
+
+## Remove `.001` from names
+static func get_name_from_gltf(gltf_node: GLTFNode) -> String:
+	var regex = RegEx.new()
+	regex.compile(r"\.\d+$")
+	
+	return regex.sub(gltf_node.original_name, "")
+
+
+## Remove `_001` from names
+static func get_name_from_node(node: Node) -> String:
+	var regex = RegEx.new()
+	regex.compile(r"_\d+$")
+	
+	return regex.sub(node.name, "")
+
+
+static func get_extras(gltf_node: GLTFNode) -> Dictionary:
+	if "extras" in gltf_node.get_meta_list():
+		return gltf_node.get_meta("extras")
+		
+	return {}
+	
+
+static func all_of(node: Node) -> Array[Node]:
+	var nodes: Array[Node] = []
+	nodes.append(node)
+	
+	for child in node.get_children():
+		nodes.append_array(all_of(child))
+
+	return nodes
+
+
+
 static func apply_param(node: Node, key: String, value: Variant) -> Error:
 	# TODO(@melvspace): separate applying params per strategy. 
 	# Example - ImporterMeshInstance3D strategy should create lazy node and 
@@ -94,3 +129,56 @@ static func _handle_special_types(object_value: Variant, value: Variant):
 				value = Quaternion(value[0], value[1], value[2], value[3])
 
 	return value
+	
+## Replaces a node with a new node, transferring all children and preserving the original node's name
+## 
+## @param node The original node to be replaced
+## @param new_node The new node that will replace the original node
+## @param extras Optional extras dictionary to set on the new node. If null, copies from original node.
+## @param skip_children If true, children are NOT transferred to the new node.
+static func replace(node: Node, new_node: Node, extras: Variant = null, skip_children: bool = true) -> void:
+	if not new_node:
+		push_warning("Cant replace node to nothing")
+		return
+
+	var parent = node.get_parent()
+	
+	# Workaround to fix collection instance translation
+	# Often Blender collections are imported with an extra offset node
+	var node_position := Vector3.ZERO
+	if parent is Node3D and parent.get_child_count() > 0:
+		var first_child = parent.get_child(0)
+		if first_child is Node3D:
+			node_position = first_child.position
+			node_position = parent.quaternion * node_position
+	
+	if not skip_children:
+		for child in node.get_children(true):
+			var child_owner = child.owner
+			node.remove_child(child)
+			new_node.add_child(child, true)
+			child.owner = child_owner
+	
+	if node.get_parent():
+		node.add_sibling(new_node)
+
+	var node_name: String = node.name
+	var node_owner: Node = node.owner
+	var node_meta: Dictionary = extras if extras is Dictionary else node.get_meta("extras", {})
+	
+	if new_node is Node3D and parent is Node3D:
+		#print("Original node position: %s" % [node.position])
+		#print("Target node position: %s" % [node_position])
+		
+		new_node.position = parent.position + node_position
+		new_node.quaternion = parent.quaternion
+		new_node.scale = parent.scale
+	
+	if node is Node3D and new_node is Node3D:
+		new_node.transform = node.transform
+	
+	node.queue_free() # Use queue_free instead of free for safety
+
+	new_node.owner = node_owner
+	new_node.name = node_name
+	new_node.set_meta("extras", node_meta)
