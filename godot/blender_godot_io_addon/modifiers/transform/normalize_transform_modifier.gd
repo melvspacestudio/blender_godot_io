@@ -6,6 +6,8 @@
 ## For multi child nodes it searches node with name _Root or _Origin and uses its position as anchor for the object.
 class_name BGIO_NormalizeTransformNodeModifier extends BGIO_NodeModifier
 
+const NORMALIZED_META := &"BGIO_NormalizeTransformNodeModifier_normalized"
+
 func _is_root_node(gltf_node: GLTFNode) -> bool:
 	if gltf_node.mesh != -1: return false
 	var node_name := _get_name_from_gltf(gltf_node).to_lower()
@@ -94,7 +96,7 @@ func _normalize_child_nodes(nodes: Array[GLTFNode], gltf_node: GLTFNode) -> void
 				child.position -= delta
 
 func _normalize_state(state: GLTFState) -> void:
-	if state.has_meta(&"BGIO_NormalizeTransformNodeModifier/normalized"):
+	if state.has_meta(NORMALIZED_META):
 		return
 	
 	var nodes: Array[GLTFNode] = state.get_nodes()
@@ -107,7 +109,7 @@ func _normalize_state(state: GLTFState) -> void:
 		_normalize_child_nodes(nodes, gltf_node)
 	
 	state.set_nodes(nodes)
-	state.set_meta(&"BGIO_NormalizeTransformNodeModifier/normalized", true)
+	state.set_meta(NORMALIZED_META, true)
 
 func pre_generate(state: GLTFState) -> Error:
 	_normalize_state(state)
