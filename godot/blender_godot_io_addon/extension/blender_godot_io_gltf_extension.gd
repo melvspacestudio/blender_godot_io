@@ -1,3 +1,4 @@
+@tool
 class_name BlenderGodotIO_GLTF_Extension extends GLTFDocumentExtension
 
 static var TAG:
