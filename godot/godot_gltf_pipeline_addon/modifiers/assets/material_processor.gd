@@ -4,39 +4,44 @@ class_name GGP_Material_NodeModifier extends GGP_NodeModifier
 @export_dir
 var material_dir: String = "assets/materials"
 
+@export
+var overwrite_existing: bool = false
+
 
 func _get_material_dir() -> String:
-	if material_dir.begins_with("res://"):
-		return material_dir
-		
-	if not material_dir.begins_with("/"):
-		var resource_dir = resource_path.replace("res://", "").split("/")
-		resource_dir.remove_at(resource_dir.size() - 1)
-		
-		return "res://" + "/".join(resource_dir).path_join(material_dir)
-
-	return material_dir
+	return GGP_AssetProcessor_Utility.resolve_output_dir(resource_path, material_dir)
 
 
 func pre_generate(state: GLTFState) -> Error:
 	if not material_dir:
 		push_warning("Material directory is not set for %s" % [self])
 		return ERR_SKIP
+
+	var resolved_material_dir := _get_material_dir()
+	var dir_error := GGP_AssetProcessor_Utility.ensure_output_dir(resolved_material_dir)
+	if dir_error != OK:
+		push_warning("Could not create material directory `%s`: %s. Skipping material extraction." % [resolved_material_dir, error_string(dir_error)])
+		return ERR_SKIP
 	
 	var materials: Array[Material] = state.get_materials()
-	var new_materials: Array[Material] = []
+	var json_materials := GGP_AssetProcessor_Utility.get_json_array(state.json, "materials", "GGP_Material_NodeModifier")
 	
-	var json_materials = state.json.get("materials", [])
-	
-	for i in len(materials):
-		var material = materials[i]
-		var name = json_materials[i]["name"]
+	for i in materials.size():
+		var material := materials[i]
+		if material == null:
+			push_warning("Skipping null material at runtime material index %d." % [i])
+			continue
 		
-		var path = _get_material_dir().path_join(name + ".tres")
-		if not ResourceLoader.exists(path):
-			ResourceSaver.save(material, path)
+		var name := GGP_AssetProcessor_Utility.get_safe_stem_from_json(json_materials, i, "materials", "material", "GGP_Material_NodeModifier")
+		var path := resolved_material_dir.path_join(name + ".tres")
+		if overwrite_existing or not GGP_AssetProcessor_Utility.resource_file_exists(path):
+			var save_error := ResourceSaver.save(material, path)
+			if save_error != OK:
+				push_warning("Could not save material `%s`: %s. Skipping runtime material index %d." % [path, error_string(save_error), i])
+				continue
 			
-		material.set_meta("material_path", path)
+		if GGP_AssetProcessor_Utility.resource_file_exists(path):
+			material.set_meta("material_path", path)
 	
 	return OK
 	
