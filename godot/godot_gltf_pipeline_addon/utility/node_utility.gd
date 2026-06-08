@@ -116,6 +116,7 @@ static func replace(node: Node, new_node: Node, extras: Variant = null, skip_chi
 		return
 
 	var parent = node.get_parent()
+	var node_index := node.get_index()
 	
 	# Workaround to fix collection instance translation
 	# Often Blender collections are imported with an extra offset node
@@ -133,9 +134,6 @@ static func replace(node: Node, new_node: Node, extras: Variant = null, skip_chi
 			new_node.add_child(child, true)
 			child.owner = child_owner
 	
-	if node.get_parent():
-		node.add_sibling(new_node)
-
 	var node_name: String = node.name
 	var node_owner: Node = node.owner
 	var node_meta: Dictionary = extras if extras is Dictionary else node.get_meta("extras", {})
@@ -151,8 +149,13 @@ static func replace(node: Node, new_node: Node, extras: Variant = null, skip_chi
 	if node is Node3D and new_node is Node3D:
 		new_node.transform = node.transform
 	
-	node.queue_free() # Use queue_free instead of free for safety
-
-	new_node.owner = node_owner
 	new_node.name = node_name
 	new_node.set_meta("extras", node_meta)
+
+	if parent:
+		parent.remove_child(node)
+		parent.add_child(new_node)
+		parent.move_child(new_node, node_index)
+		new_node.owner = node_owner
+
+	node.queue_free() # Use queue_free instead of free for safety

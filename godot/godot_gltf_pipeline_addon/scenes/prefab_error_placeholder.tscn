@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_prefab_error"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prefab_error"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_prefab_error_marker"]
+size = Vector3(0.12, 1.75, 0.12)
+
+[node name="PrefabErrorPlaceholder" type="Node3D"]
+
+[node name="MarkerBody" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_prefab_error")
+surface_material_override/0 = SubResource("StandardMaterial3D_prefab_error")
+
+[node name="MarkerBarX" type="MeshInstance3D" parent="."]
+rotation = Vector3(0, 0, 0.785398)
+mesh = SubResource("BoxMesh_prefab_error_marker")
+surface_material_override/0 = SubResource("StandardMaterial3D_prefab_error")
+
+[node name="MarkerBarY" type="MeshInstance3D" parent="."]
+rotation = Vector3(0, 0, -0.785398)
+mesh = SubResource("BoxMesh_prefab_error_marker")
+surface_material_override/0 = SubResource("StandardMaterial3D_prefab_error")
+
+[node name="DebugLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+text = "Prefab error"
+font_size = 20
+modulate = Color(1, 0, 0, 1)
+billboard = 1

@@ -58,6 +58,14 @@ godot --headless --path example/game --quit
 godot --headless --path example/game --editor --quit
 ```
 
+The repository `Justfile` provides the preferred GdUnit test entry point:
+
+```sh
+just gdunit
+```
+
+It loads `.env` automatically and respects `GODOT_BIN`; if `GODOT_BIN` is unset, the recipe searches for `godot4.7`, `godot4`, then `godot` on `PATH`.
+
 If Godot is not installed or the executable has a different name, state that verification was not run instead of inventing a passing result.
 
 ## GDScript Conventions
@@ -90,6 +98,7 @@ Choose validation based on the change:
 
 - Documentation-only changes: no runtime test is required.
 - GDScript logic changes: run a Godot headless load of `example/game` if available.
+- GDScript test changes: run `just gdunit` when the `Justfile`, GdUnit add-on, and Godot executable are available.
 - Import pipeline changes: reimport the affected sample asset in Godot, then review the changed `.import`, `.uid`, `.tres`, `.tscn`, and generated asset files.
 - Scene or resource edits: open or load the example project and check for missing script/resource errors.
 

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fallback_order"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[node name="FallbackOrder" type="Node3D"]
+
+[node name="LoadedAfterInvalidCandidate" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_fallback_order")
