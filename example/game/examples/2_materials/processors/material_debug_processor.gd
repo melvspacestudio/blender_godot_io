@@ -1,5 +1,5 @@
 @tool
-class_name BGIO_DebugMaterial_NodeModifier extends BGIO_NodeModifier
+class_name GGP_DebugMaterial_NodeModifier extends GGP_NodeModifier
 
 
 func process_scene(state: GLTFState, root: Node) -> Error:

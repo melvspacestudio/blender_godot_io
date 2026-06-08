@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/melv-space-studio/blender_godot_io/main/pr/logo.png" height="64px" alt="logo" /> Blender -> Godot IO Pipeline Tools
+# <img src="pr/logo.png" height="64px" alt="logo" /> Godot - GLTF Pipeline
 
 > [!WARNING] 
 > **Work in progress**

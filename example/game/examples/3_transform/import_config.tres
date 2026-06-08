@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="BGIO_ImportConfig" format=3 uid="uid://c1quunb08lt0s"]
+[gd_resource type="Resource" script_class="GGP_ImportConfig" format=3 uid="uid://c1quunb08lt0s"]
 
-[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/blender_godot_io_addon/modifiers/base/node_modifier.gd" id="1_54mo7"]
-[ext_resource type="Script" uid="uid://d2on0b83b0ff7" path="res://addons/blender_godot_io_addon/modifiers/transform/normalize_transform_modifier.gd" id="2_c5y5q"]
-[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/blender_godot_io_addon/config/import_config.gd" id="3_c5y5q"]
+[ext_resource type="Script" uid="uid://beewqmyle0hqg" path="res://addons/godot_gltf_pipeline_addon/modifiers/base/node_modifier.gd" id="1_54mo7"]
+[ext_resource type="Script" uid="uid://d2on0b83b0ff7" path="res://addons/godot_gltf_pipeline_addon/modifiers/transform/normalize_transform_modifier.gd" id="2_c5y5q"]
+[ext_resource type="Script" uid="uid://npj4r35p2x2f" path="res://addons/godot_gltf_pipeline_addon/config/import_config.gd" id="3_c5y5q"]
 
 [sub_resource type="Resource" id="Resource_m0bi0"]
 script = ExtResource("2_c5y5q")

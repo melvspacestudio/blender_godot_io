@@ -14,7 +14,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Blender Godot IO Example"
+config/name="Godot - GLTF Pipeline Example"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(1, 1, 1, 1)
 boot_splash/stretch_mode=0
@@ -27,17 +27,17 @@ ImmediateGizmos2D="*uid://dy3uarox5dcqv"
 ImmediateGizmos3D="*uid://b1itedits8xid"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
-[blender_godot_io]
-
-configuration_path="res://config.tres"
-
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://addons/blender_godot_io_addon/plugin.cfg", "res://addons/character-controller/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/immediate_gizmos/plugin.cfg", "res://addons/quick_menu/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://addons/character-controller/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/godot_gltf_pipeline_addon/plugin.cfg", "res://addons/immediate_gizmos/plugin.cfg", "res://addons/quick_menu/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [filesystem]
 
 import/blender/enabled=false
+
+[godot_gltf_pipeline]
+
+configuration_path="res://config.tres"
 
 [importer_defaults]
 
