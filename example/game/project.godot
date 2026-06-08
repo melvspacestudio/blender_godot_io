@@ -35,10 +35,6 @@ enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://add
 
 import/blender/enabled=false
 
-[godot_gltf_pipeline]
-
-configuration_path="res://config.tres"
-
 [importer_defaults]
 
 scene={
