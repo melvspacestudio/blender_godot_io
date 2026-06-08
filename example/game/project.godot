@@ -29,7 +29,7 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://addons/character-controller/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/godot_gltf_pipeline_addon/plugin.cfg", "res://addons/immediate_gizmos/plugin.cfg", "res://addons/quick_menu/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/accelerator_keys/plugin.cfg", "res://addons/character-controller/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/godot_gltf_pipeline_addon/plugin.cfg", "res://addons/immediate_gizmos/plugin.cfg", "res://addons/quick_menu/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [filesystem]
 
