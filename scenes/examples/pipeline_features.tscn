@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dgf88jml08ujt"]
+
+[ext_resource type="PackedScene" uid="uid://csui5136ggng3" path="res://assets/models/showcase/pipeline_features.gltf" id="1_pipeline"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_00e42"]
+
+[node name="PipelineFeaturesExample" type="Node3D" unique_id=2031965923]
+
+[node name="PipelineFeatures" parent="." unique_id=1832437105 instance=ExtResource("1_pipeline")]
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=727352083]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 5, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=922232815]
+transform = Transform3D(0.836516, -0.224144, 0.5, 0, 0.912871, 0.408248, -0.547723, -0.341565, 0.763763, 6, 4, 8)
+current = true
+fov = 50.0
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1180328368]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.743555, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=841769558]
+shape = SubResource("WorldBoundaryShape3D_00e42")

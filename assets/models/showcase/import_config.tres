@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="GGP_ImportConfig" load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/config/import_config.gd" id="1_import_config"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/transform/normalize_transform_modifier.gd" id="2_normalize"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/assets/specular_processor.gd" id="3_specular"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/assets/texture_processor.gd" id="4_texture"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/assets/material_processor.gd" id="5_material"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/classes/class_node_modifier.gd" id="6_class"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/collision/collision_node_modifier.gd" id="7_collision"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/mesh/dynamic_mesh_node_modifer.gd" id="8_dynamic"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/light/light_modifier.gd" id="9_light"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/prefab/prefab_modifier.gd" id="10_prefab"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/utility/discard_modifier.gd" id="11_discard"]
+[ext_resource type="Script" path="res://addons/godot_gltf_pipeline_addon/modifiers/base/node_modifier.gd" id="12_base"]
+
+[sub_resource type="Resource" id="Resource_normalize"]
+script = ExtResource("2_normalize")
+
+[sub_resource type="Resource" id="Resource_specular"]
+script = ExtResource("3_specular")
+
+[sub_resource type="Resource" id="Resource_texture"]
+script = ExtResource("4_texture")
+texture_dir = "generated/textures"
+
+[sub_resource type="Resource" id="Resource_material"]
+script = ExtResource("5_material")
+material_dir = "generated/materials"
+
+[sub_resource type="Resource" id="Resource_class"]
+script = ExtResource("6_class")
+
+[sub_resource type="Resource" id="Resource_collision"]
+script = ExtResource("7_collision")
+
+[sub_resource type="Resource" id="Resource_dynamic"]
+script = ExtResource("8_dynamic")
+
+[sub_resource type="Resource" id="Resource_light"]
+script = ExtResource("9_light")
+
+[sub_resource type="Resource" id="Resource_prefab"]
+script = ExtResource("10_prefab")
+prefab_dir = "prefabs"
+
+[sub_resource type="Resource" id="Resource_discard"]
+script = ExtResource("11_discard")
+
+[resource]
+script = ExtResource("1_import_config")
+modifiers = Array[ExtResource("12_base")]([SubResource("Resource_normalize"), SubResource("Resource_specular"), SubResource("Resource_texture"), SubResource("Resource_material"), SubResource("Resource_class"), SubResource("Resource_collision"), SubResource("Resource_dynamic"), SubResource("Resource_light"), SubResource("Resource_prefab"), SubResource("Resource_discard")])

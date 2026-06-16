@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bkg5q36sp1gyd"]
+
+[resource]
+resource_name = "GGP_Showcase_mat_orange_rubber"
+cull_mode = 2
+albedo_color = Color(0.97769153, 0.64995646, 0.3133042, 1)
+metallic = 0.05
+roughness = 0.72

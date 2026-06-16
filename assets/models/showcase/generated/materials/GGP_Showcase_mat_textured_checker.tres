@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dtw4h31kd0ino"]
+
+[ext_resource type="Texture2D" path="res://assets/models/showcase/generated/textures/GGP_Showcase_mat_textured_checker_checker.png" id="1_47pp8"]
+
+[resource]
+resource_name = "GGP_Showcase_mat_textured_checker"
+cull_mode = 2
+albedo_texture = ExtResource("1_47pp8")
+roughness = 0.4
+metadata/_gltf_primary_texture_coord = 0
