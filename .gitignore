@@ -256,3 +256,19 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,python,blender
+
+# Godot 4+ specific ignores
+.godot/
+/android/
+.env
+.envrc
+!.env.example
+.codex/memories
+reference/
+tmp/
+
+# MacOS
+.DS_Store
+
+# gdUnit
+reports/
