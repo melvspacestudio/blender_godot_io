@@ -1,0 +1,20 @@
+diff --git a/addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd b/addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd
+index 0a89b39b..318f103e 100644
+--- a/addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd
++++ b/addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd
+@@ -107,8 +107,13 @@ func _init_statistic_panels(state: STATE) -> void:
+ 	btn_down.texture_normal = texture_normal
+ 	btn_down.texture_hover = texture_hover
+ 	btn_down.texture_pressed = texture_pressed
+-	btn_up.pressed.connect(_on_button_up.bind(state))
+-	btn_down.pressed.connect(_on_button_down.bind(state))
++	var on_button_up := _on_button_up.bind(state)
++	if not btn_up.pressed.is_connected(on_button_up):
++		btn_up.pressed.connect(on_button_up)
++
++	var on_button_down := _on_button_down.bind(state)
++	if not btn_down.pressed.is_connected(on_button_down):
++		btn_down.pressed.connect(on_button_down)
+ 
+ 
+ func _on_button_up(state: STATE) -> void:

@@ -1,7 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://bqufprar3oeth"]
-
-[resource]
-resource_name = "metalDark.106"
-cull_mode = 2
-albedo_color = Color(0.8406653, 0.8597078, 0.8929763, 1)
-roughness = 0.5527864
