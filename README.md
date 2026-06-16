@@ -1,4 +1,4 @@
-# <img src="pr/logo.png" height="64px" alt="logo" /> Godot - GLTF Pipeline
+# <img src="assets/logo/icon.png" height="64px" alt="logo" /> Godot - GLTF Pipeline
 
 > [!WARNING] 
 > **Work in progress**

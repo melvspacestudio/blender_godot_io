@@ -24,5 +24,4 @@ gdunit:
 		exit 1
 	fi
 
-	cd example/game
 	./addons/gdUnit4/runtest.sh --godot_binary "$godot_bin" -a res://tests -c

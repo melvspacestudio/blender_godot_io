@@ -1,4 +1,5 @@
 *.glb.unwrap_cache
+reports/
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,python,blender
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,python,blender
@@ -95,6 +96,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+reports/
 htmlcov/
 .tox/
 .nox/

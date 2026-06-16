@@ -1,6 +1,6 @@
 extends GdUnitTestSuite
 
-const VALID_MATERIAL_PATH := "res://examples/4_prefabs/assets/materials/_defaultMat.tres"
+const VALID_MATERIAL_PATH := "res://tests/classes/fixtures/materials/default_material.tres"
 
 var _generated_node: Node
 var _property_target: ImportedPropertyTarget
