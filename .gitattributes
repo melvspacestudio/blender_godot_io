@@ -1,6 +1,9 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
 
+# Patch files intentionally contain diff-format whitespace.
+*.patch -whitespace
+
 # GitHub "Download ZIP" uses git archive; ship only the addon package.
 * export-ignore
 addons -export-ignore

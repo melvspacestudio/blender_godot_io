@@ -22,4 +22,3 @@ static func get_classname(gltf_node: GLTFNode) -> String:
 		return classname
 
 	return ""
-

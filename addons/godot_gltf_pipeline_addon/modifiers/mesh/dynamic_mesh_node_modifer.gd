@@ -10,5 +10,5 @@ func _make_rigidbody_dynamic(body: RigidBody3D):
 func process_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, node: Node) -> Node:
 	if node is RigidBody3D:
 		_make_rigidbody_dynamic(node)
-	
+
 	return node

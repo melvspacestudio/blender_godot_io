@@ -27,26 +27,26 @@ static var draw_font_max_width : int = 512;
 static var draw_required_selection : Node = null;
 
 static func is_required_selection_met() -> bool:
-	if (draw_required_selection == null): 
+	if (draw_required_selection == null):
 		return true;
 	if (!Engine.is_editor_hint()):
 		return false;
-	
+
 	var sceneRoot := get_scene_root();
 	var selected := draw_required_selection;
-	
+
 	var editorInterface := Engine.get_singleton("EditorInterface");
 	while (editorInterface != null && selected != sceneRoot):
 		if (editorInterface.get_selection().get_selected_nodes().has(selected)):
 			return true;
 		selected = selected.get_parent();
-	return false;	
+	return false;
 
 static func _get_color(color : Color) -> Color:
 	if (color == EditorImmediateGizmos.gizmo_default_color):
 		return EditorImmediateGizmos.draw_color;
 	return color
-	
+
 static func reset() -> void:
 	draw_color = Color.WHITE;
 	draw_2d_transform = Transform2D.IDENTITY;
@@ -55,7 +55,7 @@ static func reset() -> void:
 	draw_font_size = 20;
 	draw_font_max_width = 512;
 	draw_required_selection = null;
-	
+
 ##########################################################################
 
 @abstract class RenderBlock:
@@ -65,17 +65,17 @@ static func reset() -> void:
 	var is_3d : bool;
 	var material : ShaderMaterial;
 	var duplicate_material : bool;
-	
+
 	func _init(is3d : bool, _material : ShaderMaterial, duplicateMaterial : bool) -> void:
 		is_3d = is3d;
 		material = _material;
 		duplicate_material = duplicateMaterial;
-	
+
 	func _add_instance() -> void:
 		var meshInstance : Node = null;
 		var mesh : ImmediateMesh = ImmediateMesh.new();
 		var mat := material.duplicate() if (duplicate_material) else material;
-		
+
 		if (is_3d):
 			meshInstance = MeshInstance3D.new();
 			meshInstance.mesh = mesh;
@@ -85,15 +85,15 @@ static func reset() -> void:
 			meshInstance.mesh = mesh;
 			meshInstance.top_level = true;
 			meshInstance.material = mat;
-		
+
 		meshes.append(mesh);
 		mesh_instances.append(meshInstance);
 		EditorImmediateGizmos.get_root().add_child(meshInstance);
 
 	func _is_usable_mesh(index : int) -> bool:
-		assert(0 <= index &&  index < meshes.size()); 
+		assert(0 <= index &&  index < meshes.size());
 		return meshes[index].get_surface_count() < RenderingServer.MAX_MESH_SURFACES;
-			
+
 	func _get_usable_mesh() -> ImmediateMesh:
 		var index : int = instance_counter;
 		while (index < meshes.size()):
@@ -111,13 +111,13 @@ static func reset() -> void:
 
 class LineRenderBlock:
 	extends RenderBlock;
-	
+
 	func _init(is3d : bool):
 		if (!is3d):
 			super(false, EditorImmediateGizmos.gizmo_material_line_2d, false);
 		else:
 			super(true, EditorImmediateGizmos.gizmo_material_line_3d, false);
-	
+
 	func draw_line_2d(points : Array[Vector2], color : Color) -> void:
 		var mesh := _get_usable_mesh();
 		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP);
@@ -125,7 +125,7 @@ class LineRenderBlock:
 		for point : Vector2 in points:
 			mesh.surface_add_vertex_2d(EditorImmediateGizmos.draw_2d_transform * point);
 		mesh.surface_end();
-	
+
 	func draw_line_3d(points : Array[Vector3], color : Color) -> void:
 		var mesh := _get_usable_mesh();
 		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP);
@@ -136,15 +136,15 @@ class LineRenderBlock:
 
 class TextRenderBlock:
 	extends RenderBlock;
-	
+
 	var textAtlases : Array[TextAtlas] = [];
-	
+
 	func _init(is3d : bool):
 		if (!is3d):
 			super(false, EditorImmediateGizmos.gizmo_material_text_2d, true);
 		else:
 			super(true, EditorImmediateGizmos.gizmo_material_text_3d, true);
-	
+
 	func _add_text_atlas() -> void:
 		var subViewport := SubViewport.new();
 		subViewport.size = Vector2i(gizmo_text_viewport_size.x, gizmo_text_viewport_size.y);
@@ -153,7 +153,7 @@ class TextRenderBlock:
 		textAtlases.append(textAtlas);
 		subViewport.add_child(textAtlas);
 		EditorImmediateGizmos.get_root().add_child(subViewport);
-	
+
 	func draw_text_atlas(text : String, font : Font, fontSize : int) -> AtlasDrawInfo:
 		for textAtlas : TextAtlas in textAtlases:
 			var rect := textAtlas.draw_text(text, font, fontSize);
@@ -167,14 +167,14 @@ class TextRenderBlock:
 		if (newRect.has_area()):
 			return AtlasDrawInfo.new(newTextAtlas.get_uv(newRect), newTextAtlas);
 		return null;
-		
+
 	class AtlasDrawInfo:
 		var uv_rect : Rect2;
 		var atlas : TextAtlas;
 		func _init(uvRect : Rect2, _atlas : TextAtlas) -> void:
 			uv_rect = uvRect;
 			atlas = _atlas;
-	
+
 	func _get_atlas_mesh(atlas : TextAtlas) -> ImmediateMesh:
 		for meshIndex : int in atlas.meshes.size():
 			if (_is_usable_mesh(atlas.meshes[meshIndex])):
@@ -191,15 +191,15 @@ class TextRenderBlock:
 		if (drawInfo == null): return;
 		var mesh := _get_atlas_mesh(drawInfo.atlas);;
 		if (mesh == null): return;
-		
+
 		var uv_tl := drawInfo.uv_rect.position;
 		var uv_br := uv_tl + drawInfo.uv_rect.size;
 		var uv_bl := Vector2(uv_tl.x, uv_br.y);
 		var uv_tr := Vector2(uv_br.x, uv_tl.y);
-		
+
 		var v_bl := Vector2(0.0, 0.0);
 		var v_tr := Vector2(drawInfo.uv_rect.size.x / drawInfo.uv_rect.size.y, -1.0) * height;
-		var offset := position;	
+		var offset := position;
 		match (hAlign):
 			HORIZONTAL_ALIGNMENT_CENTER:
 				offset.x -= v_tr.x * 0.5;
@@ -214,12 +214,12 @@ class TextRenderBlock:
 		v_tr += offset;
 		var v_tl := Vector2(v_bl.x, v_tr.y);
 		var v_br := Vector2(v_tr.x, v_bl.y);
-		
+
 		v_bl = EditorImmediateGizmos.draw_2d_transform * v_bl;
 		v_tr = EditorImmediateGizmos.draw_2d_transform * v_tr;
 		v_tl = EditorImmediateGizmos.draw_2d_transform * v_tl;
 		v_br = EditorImmediateGizmos.draw_2d_transform * v_br;
-		
+
 		mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES);
 		mesh.surface_set_color(EditorImmediateGizmos.draw_color);
 		#
@@ -244,15 +244,15 @@ class TextRenderBlock:
 		if (drawInfo == null): return;
 		var mesh := _get_atlas_mesh(drawInfo.atlas);;
 		if (mesh == null): return;
-		
+
 		var uv_tl := drawInfo.uv_rect.position;
 		var uv_br := uv_tl + drawInfo.uv_rect.size;
 		var uv_bl := Vector2(uv_tl.x, uv_br.y);
 		var uv_tr := Vector2(uv_br.x, uv_tl.y);
-		
+
 		var v_bl := Vector3(0.0, 0.0, 0.0);
 		var v_tr := Vector3(drawInfo.uv_rect.size.x / drawInfo.uv_rect.size.y, 1.0, 0.0) * height;
-		var offset := position;	
+		var offset := position;
 		match (hAlign):
 			HORIZONTAL_ALIGNMENT_CENTER:
 				offset.x -= v_tr.x * 0.5;
@@ -267,12 +267,12 @@ class TextRenderBlock:
 		v_tr += offset;
 		var v_tl := Vector3(v_bl.x, v_tr.y, position.z);
 		var v_br := Vector3(v_tr.x, v_bl.y, position.z);
-		
+
 		v_bl = EditorImmediateGizmos.draw_3d_transform * v_bl;
 		v_tr = EditorImmediateGizmos.draw_3d_transform * v_tr;
 		v_tl = EditorImmediateGizmos.draw_3d_transform * v_tl;
 		v_br = EditorImmediateGizmos.draw_3d_transform * v_br;
-		
+
 		mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES);
 		mesh.surface_set_color(EditorImmediateGizmos.draw_color);
 		#
@@ -312,7 +312,7 @@ class TextRenderBlock:
 
 	class TextAtlas:
 		extends Node2D;
-		
+
 		var viewport : Viewport = null;
 		var region : Rect2i;
 		#
@@ -320,38 +320,38 @@ class TextRenderBlock:
 		var bin_strings : Array[BinStrings] = [];
 		var bin_xs : Array[int] = [ 0 ];
 		var bin_ys : Array[int] = [ 0 ];
-		
+
 		class BinStrings:
 			var rect : Rect2i;
 			var text : String;
 			var font : Font;
 			var font_size : int;
 			var max_width : int;
-			
+
 			func _init(_rect : Rect2i, _text : String, _font : Font, fontSize : int, maxWidth : int) -> void:
 				rect = _rect;
 				text = _text;
 				font = _font;
 				font_size = fontSize;
 				max_width = maxWidth;
-		
+
 		func _init(_viewport : SubViewport) -> void:
 			viewport = _viewport;
 			region = Rect2i(Vector2i.ZERO, viewport.size);
-			
+
 		func draw_text(text : String, font : Font, fontSize : int) -> Rect2i:
 			var maxWidth := mini(region.size.x, EditorImmediateGizmos.draw_font_max_width);
 			var sizei := Vector2i(font.get_multiline_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, maxWidth, fontSize).ceil());
 			var ascent := font.get_ascent(fontSize);
-			
+
 			var xIndex = 0;
 			var yIndex = 0;
 			var rect : Rect2i = Rect2i(Vector2i.ZERO, sizei);
-			if (!region.encloses(rect)): 
+			if (!region.encloses(rect)):
 				return Rect2i(-Vector2i.ONE, Vector2.ZERO);
-				
+
 			var overlapping : bool = true;
-			while (overlapping && yIndex < bin_ys.size()): 
+			while (overlapping && yIndex < bin_ys.size()):
 				overlapping = false;
 				for bin : BinStrings in bin_strings:
 					if (rect.intersects(bin.rect)):
@@ -368,8 +368,8 @@ class TextRenderBlock:
 				yIndex += 1;
 				rect.position.x = bin_xs[xIndex];
 				rect.position.y = bin_ys[yIndex];
-			
-			if (!region.encloses(rect)): 
+
+			if (!region.encloses(rect)):
 				return Rect2i();
 
 			for x in [ rect.position.x + rect.size.x ]:
@@ -385,18 +385,18 @@ class TextRenderBlock:
 			bin_strings.append(BinStrings.new(rect, text, font, fontSize, maxWidth));
 			queue_redraw();
 			return rect;
-		
+
 		func _draw() -> void:
 			for binString : BinStrings in bin_strings:
 				var ascent := binString.font.get_ascent(binString.font_size);
 				draw_multiline_string(binString.font, Vector2(binString.rect.position) + (Vector2.DOWN * ascent), binString.text, HORIZONTAL_ALIGNMENT_LEFT, binString.max_width, binString.font_size);
-		
+
 		func get_uv(rect : Rect2i) -> Rect2:
 			return Rect2(
 				Vector2(rect.position) / Vector2(region.size),
 				Vector2(rect.size) / Vector2(region.size)
 			);
-		
+
 		func clear() -> void:
 			bin_xs = [0];
 			bin_ys = [0];
@@ -414,28 +414,28 @@ enum RenderMode {
 class RenderSelector:
 	var process_block : Array[RenderBlock] = [ null, null ];
 	var render_mode : RenderMode;
-	
+
 	func _init(renderMode : RenderMode) -> void:
 		render_mode = renderMode;
-		
+
 	func _create_process_block() -> RenderBlock:
 		match (render_mode):
-			RenderMode.Gizmos_Line_2D, RenderMode.Gizmos_Line_3D: 
+			RenderMode.Gizmos_Line_2D, RenderMode.Gizmos_Line_3D:
 				return LineRenderBlock.new(render_mode == RenderMode.Gizmos_Line_3D);
-			RenderMode.Gizmos_Text_2D, RenderMode.Gizmos_Text_3D: 
+			RenderMode.Gizmos_Text_2D, RenderMode.Gizmos_Text_3D:
 				return TextRenderBlock.new(render_mode == RenderMode.Gizmos_Text_3D);
 			_: push_error("Unsupported ImmediateGizmos RenderMode");
 		return null;
-	
+
 	func _get_block_index() -> int:
 		return 1 if (Engine.is_in_physics_frame()) else 0;
-		
+
 	func get_render_block() -> RenderBlock:
 		var index := _get_block_index();
 		if (process_block[index] == null):
 			process_block[index] = _create_process_block();
 		return process_block[index];
-	
+
 	func clear() -> void:
 		var index := _get_block_index();
 		if (process_block[index] != null):
@@ -462,9 +462,9 @@ static func get_scene_root() -> Node:
 
 	assert(ProjectSettings.get_setting("application/run/main_loop_type") == "SceneTree", "To use ImmediateGizmos, the project main loop must be of type 'SceneTree'");
 	return (Engine.get_main_loop() as SceneTree).root;
-		
+
 static func get_root() -> EditorImmediateGizmos:
-	if (gizmo_root != null): 
+	if (gizmo_root != null):
 		return gizmo_root;
 
 	# Get root.
@@ -478,17 +478,17 @@ static func get_root() -> EditorImmediateGizmos:
 			# Claim back root??
 			gizmo_root = rootNode;
 			return gizmo_root;
-		
+
 		# Ignore same named node.
 		rootCounter += 1;
 		rootName = "ImmediateGizmos%d" % rootCounter;
 		rootNode = sceneRoot.find_child(rootName, false, false);
-	
+
 	# Create root.
 	gizmo_root = EditorImmediateGizmos.new();
 	gizmo_root.name = rootName;
 	sceneRoot.add_child(gizmo_root);
-	
+
 	return gizmo_root;
 
 ##########################################################################
@@ -514,7 +514,7 @@ static func draw_arc_2d(center : Vector2, startPoint : Vector2, radians : float)
 		draw_point_2d(center + pos);
 
 static func end_draw_2d(color : Color) -> void:
-	if (points_2d.size() > 0 && is_required_selection_met()): 
+	if (points_2d.size() > 0 && is_required_selection_met()):
 		var renderBlock := EditorImmediateGizmos.get_render_block(RenderMode.Gizmos_Line_2D) as LineRenderBlock;
 		if (renderBlock != null):
 			renderBlock.draw_line_2d(points_2d, color)
@@ -543,7 +543,7 @@ static func draw_arc_3d(center : Vector3, axis : Vector3, startPoint : Vector3, 
 		draw_point_3d(center + pos);
 
 static func end_draw_3d(color : Color) -> void:
-	if (points_3d.size() > 0 && is_required_selection_met()): 
+	if (points_3d.size() > 0 && is_required_selection_met()):
 		var renderBlock := EditorImmediateGizmos.get_render_block(RenderMode.Gizmos_Line_3D) as LineRenderBlock;
 		if (renderBlock != null):
 			renderBlock.draw_line_3d(points_3d, color)
@@ -555,12 +555,12 @@ static func draw_text_2d(text : String, position : Vector2, hAlign : HorizontalA
 	var renderBlock := EditorImmediateGizmos.get_render_block(RenderMode.Gizmos_Text_2D) as TextRenderBlock;
 	if (is_required_selection_met() && renderBlock != null):
 		renderBlock.draw_text_2d(text, position, hAlign, vAlign, height);
-		
+
 static func draw_text_3d(text : String, position : Vector3, hAlign : HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT, vAlign : VerticalAlignment = VERTICAL_ALIGNMENT_BOTTOM, height : float = 0.25) -> void:
 	var renderBlock := EditorImmediateGizmos.get_render_block(RenderMode.Gizmos_Text_3D) as TextRenderBlock;
 	if (is_required_selection_met() && renderBlock != null):
 		renderBlock.draw_text_3d(text, position, hAlign, vAlign, height);
-	
+
 ##########################################################################
 
 func _ready() -> void:

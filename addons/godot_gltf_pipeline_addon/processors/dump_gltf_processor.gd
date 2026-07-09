@@ -9,7 +9,7 @@ func pre_generate(state: GLTFState) -> Error:
 	if target == "all":
 		print(JSON.stringify(state.json, "  "))
 		return OK
-		
+
 	if target == "other":
 		var json = {}
 		for key in state.json.keys():
@@ -18,6 +18,6 @@ func pre_generate(state: GLTFState) -> Error:
 
 		print(JSON.stringify(json, "  "))
 		return OK
-		
+
 	print(JSON.stringify(state.json[target], "  "))
 	return OK

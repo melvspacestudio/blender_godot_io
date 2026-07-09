@@ -6,7 +6,7 @@ class_name GGP_ImportConfig extends Resource
 
 class List:
 	var configs: Array[GGP_ImportConfig]
-	
+
 	func _init(configs: Array[GGP_ImportConfig]) -> void:
 		self.configs = configs
 

@@ -13,10 +13,10 @@ func test_successful_normal_replacement_preserves_extension_replace_behavior() -
 	var root := _root_with_marker(marker)
 	marker_child.owner = root
 	var modifier := _modifier([".tscn"])
-	
+
 	var prefab_node := modifier.process_node(GLTFState.new(), GLTFNode.new(), {}, marker)
 	GGP_NodeUtility.replace(marker, prefab_node)
-	
+
 	assert_bool(prefab_node.has_meta(ERROR_CONTEXT_META)).is_false()
 	assert_str(prefab_node.name).is_equal("$TestPrefab")
 	assert_bool(prefab_node.owner == root).is_true()
@@ -24,7 +24,7 @@ func test_successful_normal_replacement_preserves_extension_replace_behavior() -
 	assert_str(str(prefab_node.get_meta("extras"))).is_equal(str({"source": "marker"}))
 	assert_bool(prefab_node.find_child("MarkerChild", true, false) == null).is_true()
 	assert_bool(prefab_node.find_child("PrefabVisual", true, false) != null).is_true()
-	
+
 	root.free()
 
 
@@ -38,10 +38,10 @@ func test_geometry_nodes_replaces_each_child_with_fresh_prefab_instance() -> voi
 	child_a.owner = root
 	child_b.owner = root
 	var modifier := _modifier([".tscn"])
-	
+
 	var result := modifier.process_node(GLTFState.new(), GLTFNode.new(), {}, marker)
 	var active_children := _active_children(marker)
-	
+
 	assert_bool(result == marker).is_true()
 	assert_bool(child_a.is_queued_for_deletion()).is_true()
 	assert_bool(child_b.is_queued_for_deletion()).is_true()
@@ -51,14 +51,14 @@ func test_geometry_nodes_replaces_each_child_with_fresh_prefab_instance() -> voi
 	assert_bool(active_children[0] != active_children[1]).is_true()
 	assert_bool(active_children[0].find_child("PrefabVisual", true, false) != null).is_true()
 	assert_bool(active_children[1].find_child("PrefabVisual", true, false) != null).is_true()
-	
+
 	root.free()
 
 
 func test_extensions_keep_configured_order_and_continue_after_invalid_candidate() -> void:
 	var modifier := _modifier(["", "/", ".tres", ".tscn"])
 	var resolution := modifier._resolve_prefab(PREFAB_DIR.path_join("FallbackOrder"))
-	
+
 	assert_bool(resolution.get("prefab") is PackedScene).is_true()
 	assert_array(resolution.get("skipped_extensions")).contains_exactly("", "/")
 	assert_array(resolution.get("attempted_candidate_paths")).contains_exactly(
@@ -66,15 +66,15 @@ func test_extensions_keep_configured_order_and_continue_after_invalid_candidate(
 		PREFAB_DIR.path_join("FallbackOrder.tscn")
 	)
 	assert_array(resolution.get("invalid_candidate_paths")).contains_exactly(PREFAB_DIR.path_join("FallbackOrder.tres"))
-	
+
 	var marker := _marker("$FallbackOrder", Transform3D.IDENTITY, {})
 	var root := _root_with_marker(marker)
 	var prefab_node := modifier.process_node(GLTFState.new(), GLTFNode.new(), {}, marker)
 	GGP_NodeUtility.replace(marker, prefab_node)
-	
+
 	assert_bool(prefab_node.has_meta(ERROR_CONTEXT_META)).is_false()
 	assert_bool(prefab_node.find_child("LoadedAfterInvalidCandidate", true, false) != null).is_true()
-	
+
 	root.free()
 
 
@@ -83,11 +83,11 @@ func test_missing_prefab_returns_error_placeholder_with_context_and_transform() 
 	var marker := _marker("$MissingPrefab", marker_transform, {"source": "missing"})
 	var root := _root_with_marker(marker)
 	var modifier := _modifier([".tscn"])
-	
+
 	var placeholder := modifier.process_node(GLTFState.new(), GLTFNode.new(), {}, marker)
 	GGP_NodeUtility.replace(marker, placeholder)
 	var context: Dictionary = placeholder.get_meta(ERROR_CONTEXT_META)
-	
+
 	assert_str(placeholder.name).is_equal("$MissingPrefab")
 	assert_str(str(placeholder.transform)).is_equal(str(marker_transform))
 	assert_str(context.get("marker_name", "")).is_equal("$MissingPrefab")
@@ -96,7 +96,7 @@ func test_missing_prefab_returns_error_placeholder_with_context_and_transform() 
 	assert_array(context.get("attempted_candidate_paths")).contains_exactly(PREFAB_DIR.path_join("MissingPrefab.tscn"))
 	assert_bool(str(context.get("failure_reason", "")).contains("not found")).is_true()
 	assert_bool(placeholder.find_child("DebugLabel", true, false) != null).is_true()
-	
+
 	root.free()
 
 
@@ -112,12 +112,12 @@ func test_geometry_nodes_missing_prefab_replaces_each_child_with_error_placehold
 	child_a.owner = root
 	child_b.owner = root
 	var modifier := _modifier([".tscn"])
-	
+
 	assert_bool(modifier.process_node(GLTFState.new(), GLTFNode.new(), {}, marker) == marker).is_true()
 	var active_children := _active_children(marker)
 	var context_a: Dictionary = active_children[0].get_meta(ERROR_CONTEXT_META)
 	var context_b: Dictionary = active_children[1].get_meta(ERROR_CONTEXT_META)
-	
+
 	assert_int(active_children.size()).is_equal(2)
 	assert_str(str(active_children[0].transform)).is_equal(str(child_a_transform))
 	assert_str(str(active_children[1].transform)).is_equal(str(child_b_transform))
@@ -126,7 +126,7 @@ func test_geometry_nodes_missing_prefab_replaces_each_child_with_error_placehold
 	assert_str(context_a.get("target_node_name", "")).is_equal("ChildA")
 	assert_str(context_b.get("marker_name", "")).is_equal("$MissingPrefab")
 	assert_str(context_b.get("target_node_name", "")).is_equal("ChildB")
-	
+
 	root.free()
 
 
@@ -141,13 +141,13 @@ func test_empty_packed_scene_instantiation_falls_back_to_error_placeholder() -> 
 		"attempted_candidate_paths": [PREFAB_DIR.path_join("BrokenPrefab.tscn")],
 		"failure_reason": "",
 	}
-	
+
 	var placeholder := modifier._instantiate_prefab_or_error(resolution, "$BrokenPrefab", marker)
 	var context: Dictionary = placeholder.get_meta(ERROR_CONTEXT_META)
-	
+
 	assert_str(str(placeholder.transform)).is_equal(str(marker_transform))
 	assert_bool(str(context.get("failure_reason", "")).contains("instantiate")).is_true()
-	
+
 	placeholder.free()
 	root.free()
 

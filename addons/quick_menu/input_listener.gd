@@ -17,12 +17,12 @@ func _exit_tree() -> void:
 
 func _main_window_focus_changed(control: Node):
 	focus = control
-	
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is not InputEventKey: return
 	event = event as InputEventKey
-	
+
 	if event.is_echo(): return
 	if not event.is_pressed(): return
 	if (event as InputEventKey).keycode != KEY_D: return
@@ -33,5 +33,5 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.shift_pressed: return
 	if event.alt_pressed: return
 	if event.ctrl_pressed: return
-	
+
 	EditorInterface.popup_dialog_centered_clamped(scene.instantiate())
