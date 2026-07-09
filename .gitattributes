@@ -1,2 +1,8 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# GitHub "Download ZIP" uses git archive; ship only the addon package.
+* export-ignore
+addons -export-ignore
+addons/godot_gltf_pipeline_addon -export-ignore
+addons/godot_gltf_pipeline_addon/** -export-ignore
